@@ -6,19 +6,19 @@ class colored_noise():
 	"""
 	Class to handle noise which is added to model
 	"""
-	def __init__(self, noise_color, low_cut, high_cut, time, n_samples): 
+	def __init__(self, noise_color, low_cut, high_cut, number, time, n_samples): 
 		self.noise_color = noise_color
 		self.low_cut = low_cut
 		self.hight_cut = high_cut
 		self.fsample = 1000
 		self.time = time
 		self.n_samples = n_samples
-		self.csvfile = os.path.join('noise',f'{noise_color}_noise_{low_cut}-{high_cut}.csv')
-		self.noise_trace = self.load()
-		self.noise_trace = self.noise_trace[:n_samples, :time]
+		self.csvfile = os.path.join('colored_noise',f'{noise_color}-noise_freq-{low_cut}-{high_cut}_{number}.csv')
+		self.trace = self.load()
+		self.trace = self.trace[:n_samples, :time]
 	
 	def __getitem__(self, index):
-		return self.noise_trace[index]
+		return self.trace[index]
 
 	def load(self):
 		noise = np.genfromtxt(self.csvfile, delimiter=',')
@@ -35,7 +35,7 @@ class colored_noise():
 		"""
 		Plots a Single-Sided Amplitude Spectrum of Noise with Sampling Frequency Fsample
 		"""
-		n = len(self.noise_trace) # length of the Noise
+		n = len(self.trace) # length of the Noise
 		k = np.arange(n)
 		T = n/self.fsample
 		frq = k/T # two sides frequency range
